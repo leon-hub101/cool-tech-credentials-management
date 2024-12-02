@@ -3,6 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+// Import user routes
+const userRoutes = require('./routes/userRoutes');
+
 // Initialize dotenv to load environment variables
 dotenv.config();
 
@@ -11,6 +14,9 @@ const app = express();
 
 // Middleware to parse JSON requests
 app.use(express.json());
+
+// Use the user routes for /api/users
+app.use('/api/users', userRoutes);
 
 // Basic route to verify the server is running
 app.get('/', (req, res) => {
