@@ -11,7 +11,6 @@ const userManagementRoutes = require("./routes/userManagement");
 const divisionRoutes = require("./routes/divisionRoutes");
 const descriptionsRoute = require("./routes/descriptions");
 
-
 // Import the CredentialRepository model (this model is used in index.js)
 const CredentialRepository = require("./models/CredentialRepository");
 

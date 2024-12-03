@@ -1,26 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const AddCredentialForm = ({ divisionId }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
-  console.log("Division ID:", divisionId);
+  const [descriptions, setDescriptions] = useState([]); // Store available descriptions
+
+  // Fetch descriptions from backend when component mounts
+  useEffect(() => {
+    const fetchDescriptions = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/credentials/descriptions" // Ensure this matches the backend route to fetch descriptions
+        );
+        if (response.data) {
+          setDescriptions(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching descriptions", error);
+      }
+    };
+
+    fetchDescriptions();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Logging the divisionId to make sure it's being passed correctly
-    console.log("Division ID:", divisionId);
-
     if (!divisionId) {
-      alert("Invalid division ID");
+      alert("Please provide a valid divisionId");
       return;
     }
-
     try {
       await axios.post(
-        `/api/credentials/division/${divisionId}/credentials`,
+        `http://localhost:5000/api/division/${divisionId}/credentials`,
         { username, password, description },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -29,7 +42,7 @@ const AddCredentialForm = ({ divisionId }) => {
       alert("Credential added successfully");
     } catch (error) {
       console.error("Error adding credential", error);
-      alert("Error adding credential");
+      alert("Error adding credential. Please try again.");
     }
   };
 
@@ -83,18 +96,26 @@ const AddCredentialForm = ({ divisionId }) => {
             border: "1px solid #ccc",
           }}
         />
-        <input
-          type="text"
-          placeholder="Description"
+
+        {/* Dropdown to select description */}
+        <select
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          required
           style={{
-            marginBottom: "20px",
+            marginBottom: "15px",
             padding: "10px",
             borderRadius: "4px",
             border: "1px solid #ccc",
           }}
-        />
+        >
+          <option value="">Select Description</option>
+          {descriptions.map((desc) => (
+            <option key={desc._id} value={desc.name}>
+              {desc.name}
+            </option>
+          ))}
+        </select>
 
         <button
           type="submit"

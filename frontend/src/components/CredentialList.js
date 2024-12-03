@@ -29,7 +29,9 @@ const CredentialList = ({ divisionId, userRole }) => {
       fetchCredentials();
     }
   }, [divisionId]);
-
+  
+  console.log("Division ID in CredentialList component:", divisionId);
+  
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
 
   return (

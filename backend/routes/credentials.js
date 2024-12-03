@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const CredentialRepository = require("../models/CredentialRepository");
+const Description = require("../models/Description");
 const verifyJWT = require("../middleware/auth");
 
 // GET /division/:divisionId/credentials
@@ -70,6 +71,16 @@ router.put("/credentials/:credentialId", verifyJWT, async (req, res) => {
     res.json(repository);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// GET /credentials/descriptions
+router.get("/credentials/descriptions", verifyJWT, async (req, res) => {
+  try {
+    const descriptions = await Description.find();
+    res.status(200).json(descriptions);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching descriptions" });
   }
 });
 
