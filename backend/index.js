@@ -4,12 +4,15 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
-// Import user routes
+// Import routes
 const userRoutes = require("./routes/userRoutes");
 const credentialRoutes = require("./routes/credentials");
 const userManagementRoutes = require("./routes/userManagement");
+const divisionRoutes = require("./routes/divisionRoutes");
+const descriptionsRoute = require("./routes/descriptions");
 
-// Import CredentialRepository model
+
+// Import the CredentialRepository model (this model is used in index.js)
 const CredentialRepository = require("./models/CredentialRepository");
 
 // Initialize dotenv to load environment variables
@@ -21,21 +24,26 @@ const app = express();
 // Use CORS middleware
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow requests from frontend running on localhost:3000
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
-    credentials: true, // Allow cookies and credentials
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
 
 // Middleware to parse JSON requests
 app.use(express.json());
 
-// Use the user routes for /api/users
+// Use user routes for /api/users
 app.use("/api/users", userRoutes);
-// Use the credential routes for /api/credentials
+// Use credential routes for /api/credentials
 app.use("/api/credentials", credentialRoutes);
-// Use the user management routes for /api/user-management
+// Use user management routes for /api/user-management
 app.use("/api/user-management", userManagementRoutes);
+// Use the division routes for /api/divisions
+app.use("/api/divisions", divisionRoutes);
+// Use the description routes for api/descriptions
+app.use("/api/descriptions", descriptionsRoute);
+
 
 // Basic route to verify the server is running
 app.get("/", (req, res) => {

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import AddCredentialForm from "./AddCredentialForm";
 
 const CredentialList = ({ divisionId, userRole }) => {
   const [credentials, setCredentials] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAddCredentialForm, setShowAddCredentialForm] = useState(false);
 
   useEffect(() => {
     const fetchCredentials = async () => {
@@ -23,7 +25,9 @@ const CredentialList = ({ divisionId, userRole }) => {
         setLoading(false);
       }
     };
-    fetchCredentials();
+    if (divisionId) {
+      fetchCredentials();
+    }
   }, [divisionId]);
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
@@ -87,8 +91,9 @@ const CredentialList = ({ divisionId, userRole }) => {
                 fontWeight: "bold",
                 cursor: "pointer",
               }}
+              onClick={() => setShowAddCredentialForm(!showAddCredentialForm)}
             >
-              Add Credential
+              {showAddCredentialForm ? "Cancel" : "Add Credential"}
             </button>
             <button
               style={{
@@ -106,6 +111,9 @@ const CredentialList = ({ divisionId, userRole }) => {
             </button>
           </>
         )}
+
+        {/* Render AddCredentialForm when the button is clicked */}
+        {showAddCredentialForm && <AddCredentialForm divisionId={divisionId} />}
       </div>
     </div>
   );

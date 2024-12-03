@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,24 +8,58 @@ const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    division: "",
   });
+
+  // State to handle divisions fetched from backend
+  const [divisions, setDivisions] = useState([]);
 
   // State to handle loading state for the form submission
   const [loading, setLoading] = useState(false);
 
-  const { username, password } = formData;
+  const { username, password, division } = formData;
 
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  useEffect(() => {
+    // Fetch available divisions from backend
+    const fetchDivisions = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/divisions");
+        if (res.data) {
+          setDivisions(res.data);
+        }
+      } catch (err) {
+        console.error("Error fetching divisions:", err);
+        toast.error("Could not fetch divisions, please try again later.");
+      }
+    };
+
+    fetchDivisions();
+  }, []);
+
+  // Unified onChange function for inputs and select
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    // Frontend validation for password length
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
+    if (!division) {
+      toast.error("Please select a division");
+      return;
+    }
     setLoading(true); // Set loading state to true when starting request
     try {
       // Send registration request to backend
       const res = await axios.post("http://localhost:5000/api/users/register", {
         username,
         password,
+        divisions: [division], // Include the selected division
       });
 
       // If response is successful, handle accordingly
@@ -98,6 +132,26 @@ const Register = () => {
             border: "1px solid #ccc",
           }}
         />
+
+        <select
+          name="division"
+          value={division}
+          onChange={onChange}
+          required
+          style={{
+            marginBottom: "15px",
+            padding: "10px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
+        >
+          <option value="">Select Division</option>
+          {divisions.map((div) => (
+            <option key={div._id} value={div._id}>
+              {div.name}
+            </option>
+          ))}
+        </select>
 
         <button
           type="submit"

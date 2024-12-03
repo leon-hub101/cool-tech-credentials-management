@@ -9,6 +9,15 @@ const AddCredentialForm = ({ divisionId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Logging the divisionId to make sure it's being passed correctly
+    console.log("Division ID:", divisionId);
+
+    if (!divisionId) {
+      alert("Invalid division ID");
+      return;
+    }
+
     try {
       await axios.post(
         `/api/credentials/division/${divisionId}/credentials`,
@@ -20,6 +29,7 @@ const AddCredentialForm = ({ divisionId }) => {
       alert("Credential added successfully");
     } catch (error) {
       console.error("Error adding credential", error);
+      alert("Error adding credential");
     }
   };
 
