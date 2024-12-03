@@ -63,24 +63,92 @@ const AdminControlPanel = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        padding: "20px",
+        backgroundColor: "#f7f7f7",
+      }}
+    >
       <h2>Admin Control Panel</h2>
-      <ul>
+      <ul
+        style={{
+          listStyleType: "none",
+          padding: 0,
+          width: "600px",
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+        }}
+      >
         {users.map((user) => (
-          <li key={user._id}>
-            {user.username} - Role: {user.role}
-            <button onClick={() => assignUser(user._id, "divisionId", "ouId")}>
-              Assign to Division/OU
-            </button>
-            <button onClick={() => unassignUser(user._id)}>
-              Unassign from Division/OU
-            </button>
-            <button onClick={() => changeUserRole(user._id, "management")}>
-              Change Role to Management
-            </button>
+          <li
+            key={user._id}
+            style={{
+              padding: "20px",
+              borderBottom: "1px solid #ccc",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div>
+              <strong>Username:</strong> {user.username}
+            </div>
+            <div>
+              <strong>Role:</strong> {user.role}
+            </div>
+
+            <div style={{ marginTop: "15px", display: "flex", gap: "10px" }}>
+              <button
+                onClick={() => assignUser(user._id, "divisionId", "ouId")}
+                style={{
+                  padding: "10px 15px",
+                  borderRadius: "4px",
+                  border: "none",
+                  backgroundColor: "#007bff",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                Assign to Division/OU
+              </button>
+              <button
+                onClick={() => unassignUser(user._id)}
+                style={{
+                  padding: "10px 15px",
+                  borderRadius: "4px",
+                  border: "none",
+                  backgroundColor: "#dc3545",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                Unassign
+              </button>
+              <button
+                onClick={() => changeUserRole(user._id, "management")}
+                style={{
+                  padding: "10px 15px",
+                  borderRadius: "4px",
+                  border: "none",
+                  backgroundColor: "#28a745",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                Change Role to Management
+              </button>
+            </div>
           </li>
         ))}
       </ul>

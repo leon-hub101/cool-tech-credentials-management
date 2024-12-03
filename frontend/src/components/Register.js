@@ -29,29 +29,81 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <div>
-        <label>Username</label>
-        <input
-          type="text"
-          name="username"
-          value={username}
-          onChange={onChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={onChange}
-          required
-        />
-      </div>
-      <button type="submit">Register</button>
-    </form>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh", // Full height to center vertically
+        backgroundColor: "#f7f7f7", // Light background to enhance form visibility
+      }}
+    >
+      <form
+        onSubmit={onSubmit}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "300px", // Width of the form
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+          backgroundColor: "#fff", // White background for the form
+        }}
+      >
+        <h2 style={{ textAlign: "center" }}>Register</h2>
+
+        <div style={{ marginBottom: "15px" }}>
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            value={username}
+            onChange={onChange}
+            required
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={onChange}
+            required
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
+          />
+        </div>
+
+        <button
+          type="submit"
+          style={{
+            padding: "10px",
+            borderRadius: "4px",
+            border: "none",
+            backgroundColor: "#007bff",
+            color: "#fff",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+        >
+          Register
+        </button>
+      </form>
+    </div>
   );
 };
 

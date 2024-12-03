@@ -26,21 +26,87 @@ const CredentialList = ({ divisionId, userRole }) => {
     fetchCredentials();
   }, [divisionId]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        padding: "20px",
+        backgroundColor: "#f7f7f7",
+      }}
+    >
       <h2>Credential List</h2>
-      <ul>
+      <ul
+        style={{
+          listStyleType: "none",
+          padding: 0,
+          width: "400px",
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+        }}
+      >
         {credentials.map((credential) => (
-          <li key={credential._id}>
-            Username: {credential.username}, Password: {credential.password},
-            Description: {credential.description}
+          <li
+            key={credential._id}
+            style={{
+              padding: "15px",
+              borderBottom: "1px solid #ccc",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <strong>Username:</strong> {credential.username}
+            <strong>Password:</strong> {credential.password}
+            <strong>Description:</strong> {credential.description}
           </li>
         ))}
+        {credentials.length === 0 && (
+          <li style={{ padding: "15px", textAlign: "center" }}>
+            No credentials found.
+          </li>
+        )}
       </ul>
-      {userRole === "management" && <button>Add Credential</button>}
-      {userRole === "management" && <button>Update Credential</button>}
+
+      <div style={{ marginTop: "20px" }}>
+        {userRole === "management" && (
+          <>
+            <button
+              style={{
+                padding: "10px 20px",
+                margin: "10px",
+                borderRadius: "4px",
+                border: "none",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                fontWeight: "bold",
+                cursor: "pointer",
+              }}
+            >
+              Add Credential
+            </button>
+            <button
+              style={{
+                padding: "10px 20px",
+                margin: "10px",
+                borderRadius: "4px",
+                border: "none",
+                backgroundColor: "#28a745",
+                color: "#fff",
+                fontWeight: "bold",
+                cursor: "pointer",
+              }}
+            >
+              Update Credential
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 };

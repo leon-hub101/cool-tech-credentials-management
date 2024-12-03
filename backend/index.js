@@ -8,6 +8,9 @@ const userRoutes = require("./routes/userRoutes");
 const credentialRoutes = require("./routes/credentials");
 const userManagementRoutes = require("./routes/userManagement");
 
+// Import CredentialRepository model
+const CredentialRepository = require("./models/CredentialRepository");
+
 // Initialize dotenv to load environment variables
 dotenv.config();
 
@@ -19,9 +22,9 @@ app.use(express.json());
 
 // Use the user routes for /api/users
 app.use("/api/users", userRoutes);
-// Use the credential routes for /api/credentials
+// Use the credential routes for /api
 app.use("/api", credentialRoutes);
-// Use the user management routes for /api/user-management
+// Use the user management routes for /api
 app.use("/api", userManagementRoutes);
 
 // Basic route to verify the server is running
@@ -41,13 +44,21 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
-  .connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
+  .connect(MONGO_URI)
+  .then(async () => {
     console.log("Connected to MongoDB");
-    // Start the server only if MongoDB connects successfully
+
+    // Log division IDs (temporary logging)
+    try {
+      const divisions = await CredentialRepository.find();
+      divisions.forEach((division) =>
+        console.log("Division ID:", division._id)
+      );
+    } catch (err) {
+      console.error("Error retrieving divisions:", err);
+    }
+
+    // Start the server
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
