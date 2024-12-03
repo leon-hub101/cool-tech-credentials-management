@@ -1,4 +1,3 @@
-// **backend/routes/credentials.js**: Credential Management Routes
 const express = require("express");
 const router = express.Router();
 const CredentialRepository = require("../models/CredentialRepository");

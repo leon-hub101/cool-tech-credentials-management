@@ -2,6 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 // Import user routes
 const userRoutes = require("./routes/userRoutes");
@@ -17,15 +18,24 @@ dotenv.config();
 // Initialize the Express application
 const app = express();
 
+// Use CORS middleware
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Allow requests from frontend running on localhost:3000
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+    credentials: true, // Allow cookies and credentials
+  })
+);
+
 // Middleware to parse JSON requests
 app.use(express.json());
 
 // Use the user routes for /api/users
 app.use("/api/users", userRoutes);
-// Use the credential routes for /api
-app.use("/api", credentialRoutes);
-// Use the user management routes for /api
-app.use("/api", userManagementRoutes);
+// Use the credential routes for /api/credentials
+app.use("/api/credentials", credentialRoutes);
+// Use the user management routes for /api/user-management
+app.use("/api/user-management", userManagementRoutes);
 
 // Basic route to verify the server is running
 app.get("/", (req, res) => {

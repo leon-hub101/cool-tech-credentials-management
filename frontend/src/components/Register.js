@@ -4,10 +4,14 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
+  // State to handle form input values
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
+  // State to handle loading state for the form submission
+  const [loading, setLoading] = useState(false);
 
   const { username, password } = formData;
 
@@ -16,15 +20,28 @@ const Register = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading state to true when starting request
     try {
-      const res = await axios.post("/api/users/register", {
+      // Send registration request to backend
+      const res = await axios.post("http://localhost:5000/api/users/register", {
         username,
         password,
       });
-      toast.success("Registration successful");
-      console.log(res.data.token);
+
+      // If response is successful, handle accordingly
+      if (res && res.data) {
+        toast.success("Registration successful");
+        console.log(res.data.token);
+      } else {
+        throw new Error("Invalid response from the server");
+      }
     } catch (err) {
-      toast.error(err.response.data.msg || "Registration failed");
+      console.error("Error:", err);
+      // Use optional chaining to safely access error messages
+      toast.error(err.response?.data?.msg || "Registration failed");
+    } finally {
+      // Reset loading state regardless of success or failure
+      setLoading(false);
     }
   };
 
@@ -34,8 +51,8 @@ const Register = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh", // Full height to center vertically
-        backgroundColor: "#f7f7f7", // Light background to enhance form visibility
+        height: "100vh",
+        backgroundColor: "#f7f7f7",
       }}
     >
       <form
@@ -43,64 +60,59 @@ const Register = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          width: "300px", // Width of the form
+          width: "300px",
           padding: "20px",
           borderRadius: "8px",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#fff", // White background for the form
+          backgroundColor: "#fff",
         }}
       >
         <h2 style={{ textAlign: "center" }}>Register</h2>
 
-        <div style={{ marginBottom: "15px" }}>
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            value={username}
-            onChange={onChange}
-            required
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="Username"
+          name="username"
+          value={username}
+          onChange={onChange}
+          required
+          style={{
+            marginBottom: "15px",
+            padding: "10px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
+        />
 
-        <div style={{ marginBottom: "15px" }}>
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={onChange}
-            required
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          value={password}
+          onChange={onChange}
+          required
+          style={{
+            marginBottom: "15px",
+            padding: "10px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
+        />
 
         <button
           type="submit"
+          disabled={loading}
           style={{
             padding: "10px",
             borderRadius: "4px",
             border: "none",
-            backgroundColor: "#007bff",
+            backgroundColor: loading ? "#999" : "#007bff",
             color: "#fff",
             fontWeight: "bold",
-            cursor: "pointer",
+            cursor: loading ? "not-allowed" : "pointer",
           }}
         >
-          Register
+          {loading ? "Registering..." : "Register"}
         </button>
       </form>
     </div>

@@ -17,7 +17,8 @@ API.interceptors.request.use((req) => {
 // User Services
 export const registerUser = (userData) =>
   API.post("/api/users/register", userData);
-export const loginUser = (userData) => API.post("/api/users/login", userData);
+export const loginUser = (userData) => 
+  API.post("/api/users/login", userData);
 
 // Credential Management Services
 export const getCredentials = (divisionId) =>

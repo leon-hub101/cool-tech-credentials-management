@@ -5,12 +5,13 @@ const AddCredentialForm = ({ divisionId }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
+  console.log("Division ID:", divisionId);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post(
-        `/division/${divisionId}/credentials`,
+        `/api/credentials/division/${divisionId}/credentials`,
         { username, password, description },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
