@@ -20,9 +20,9 @@ app.use(express.json());
 // Use the user routes for /api/users
 app.use("/api/users", userRoutes);
 // Use the credential routes for /api/credentials
-app.use("/api/credentials", credentialRoutes);
+app.use("/api", credentialRoutes);
 // Use the user management routes for /api/user-management
-app.use("/api/user-management", userManagementRoutes);
+app.use("/api", userManagementRoutes);
 
 // Basic route to verify the server is running
 app.get("/", (req, res) => {

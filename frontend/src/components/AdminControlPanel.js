@@ -1,4 +1,3 @@
-// **frontend/src/components/AdminControlPanel.js**: Admin Control Panel Component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 

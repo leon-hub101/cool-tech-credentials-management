@@ -1,4 +1,3 @@
-// **frontend/src/components/CredentialList.js**: Credential List Component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
