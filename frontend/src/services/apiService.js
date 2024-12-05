@@ -17,8 +17,7 @@ API.interceptors.request.use((req) => {
 // User Services
 export const registerUser = (userData) =>
   API.post("/api/users/register", userData);
-export const loginUser = (userData) => 
-  API.post("/api/users/login", userData);
+export const loginUser = (userData) => API.post("/api/users/login", userData);
 
 // Credential Management Services
 export const getCredentials = (divisionId) =>
@@ -27,6 +26,10 @@ export const addCredential = (divisionId, credentialData) =>
   API.post(`/division/${divisionId}/credentials`, credentialData);
 export const updateCredential = (credentialId, credentialData) =>
   API.put(`/credentials/${credentialId}`, credentialData);
+
+// Fetch Descriptions Service
+export const getCredentialDescriptions = () =>
+  API.get("/api/credentials/descriptions"); 
 
 // User Management Services
 export const assignUserToDivision = (userData) =>
